@@ -1,0 +1,169 @@
+{
+  "about": {
+    "title": "Om Kunstnerne",
+    "boldsen_image_url": "https://storage.googleapis.com/malerier/Martin.png",
+    "boldsen_content": "Farver har altid fascineret mig – særligt den måde, de påvirker hinanden på i samspil. Jeg arbejder bevidst med kontraster frem for traditionel harmoni og søger at udfordre de gængse farvesammensætninger. Et maleri må gerne \"passe ind\", men for mig er det vigtigste, at det vækker en følelse af varme og behag, samtidig med at det inviterer beskueren til at opdage nye perspektiver og oplevelser – igen og igen.\r\n\r\nMine værker kredser om mennesker, relationer og nære forbindelser som familie og parforhold. Ofte gemmer der sig menneskeskikkelser i malerierne – man skal blot lede efter et sæt øjne. Jeg bryder gerne med traditionelle regler for både farvevalg og menneskeskildring og lader et rigt og levende farveunivers danne rammen for mine fortællinger.\r\n\r\nJeg er autodidakt og har malet i over 25 år. Gennem årene har jeg udstillet bredt – på messer, i kunstforeninger, offentlige institutioner og gallerier, både i Danmark og internationalt.",
+    "zenia_image_url": "https://storage.googleapis.com/malerier/anja.png",
+    "zenia_content": "Jeg er Anja Zenia, selvlært keramiker og billedkunstner, drevet af en passion for at udforske det formbare materiale og de mange muligheder, det rummer. Min kunst er forankret i de bløde, organiske former, som afspejler naturens evige kredsløb og skønhed. Det er især naturen, der inspirerer mig – dens linjer, strukturer og harmoniske uforudsigelighed. Samtidig lader jeg mig fascinere af det geometriske univers, hvor præcision og orden skaber en spændende kontrast til naturens frie former.\r\n\r\n Mine skulpturelle vaser er en hyldest til denne balance mellem det naturlige og det strukturerede. Hver vase er unik og skabt med en intention om at udfordre keramikken som kunstform. Jeg elsker at eksperimentere med forskellige teknikker – nogle gange kombinerer jeg flere i ét værk for at skabe noget, der er både nyskabende og funktionelt. For mig handler det om at skabe kunst, der ikke blot kan betragtes, men også bruges og opleves på mange måder.\r\n\r\n I mit arbejde søger jeg altid at skabe noget, der både er æstetisk og praktisk. Det er vigtigt for mig, at mine værker kan integreres i forskellige sammenhænge – både i hjemmet som en smuk skulptur eller funktionel genstand og udenfor i naturen, hvor de kan indgå i en dialog med omgivelserne. På den måde bliver mine værker ikke blot dekorative elementer, men også en del af en større helhed.\r\n\r\n At være selvlært har givet mig friheden til at udforske og eksperimentere uden at være bundet af traditionelle rammer. Det har gjort det muligt for mig at finde min egen stil og skabe noget, der føles autentisk og personligt. Jeg ser hver ny udfordring som en mulighed for at lære og vokse, både som kunstner og menneske.\r\n\r\n Min keramik er en invitation til at stoppe op og lade blikket vandre over de bløde linjer, de spændende former og de små detaljer. Det er mit håb, at mine værker kan bringe glæde, inspiration og en følelse af forbindelse til både naturen og det menneskelige håndværk.",
+    "boldsen_website_url": "https://www.martinboldsen.dk",
+    "zenia_website_url": "https://www.anjazenia.dk/"
+  },
+  "home": {
+    "home_hero_image_url": "https://storage.googleapis.com/malerier/hero6.png",
+    "home_hero_title": "Zenia & Boldsen",
+    "home_hero_subtitle": "Et fælles univers af billedkunst og keramik",
+    "home_intro_title": "To Kunstnere, Ét Univers",
+    "home_intro_content": "Anja Zenia & Martin Boldsen er et kunstnerpar, der arbejder i krydsfeltet mellem keramik, maleri og skulptur. Med hver deres tydelige udtryk skaber de værker, der mødes i en fælles interesse for form, farve, kontrast og sanselighed.\r\n\r\nAnja Zenia arbejder med skulpturelle vaser, brugskunst og keramiske værker inspireret af naturens former, rytmer og strukturer. Hendes kunst balancerer mellem det organiske og det geometriske og er skabt med fokus på både æstetik, funktion og nærvær.\r\n\r\nMartin Boldsen arbejder med maleri og stentøjsskulptur, hvor farvernes energi og kontraster danner rammen om fortællinger om menneskelige relationer og indre landskaber. Hans værker bevæger sig mellem det abstrakte og det figurative og inviterer beskueren til fordybelse og egne fortolkninger.\r\n\r\nSammen skaber de et levende kunstnerisk univers, hvor materialer og udtryk går i dialog – både i fælles udstillinger og i mødet med publikum.",
+    "home_intro_signature": "Anja Zenia & Martin Boldsen",
+    "home_intro_image_url": "https://storage.googleapis.com/malerier/anjaogmartin%20(1).jpg",
+    "promo_carousel_slides": [
+      {
+        "title": "Udforsk Vores Værker",
+        "description": "Se alle malerier og keramiske værker i vores fælles galleri.",
+        "media_url": "https://storage.googleapis.com/malerier/lager4.jpg",
+        "media_type": "image",
+        "button_text": "Gå til Galleri",
+        "button_link": "/galleri"
+      },
+      {
+        "title": "Passer det mon i vores stue?",
+        "description": "Prøv værkerne hjemme inden I beslutter jer!",
+        "media_url": "https://storage.googleapis.com/malerier/seihjem.png",
+        "media_type": "image",
+        "button_text": "Kontakt os",
+        "button_link": "/contact?subject=sehjemme"
+      },
+      {
+        "title": "Værker på bestilling",
+        "description": "Vi laver også værker på bestemte mål og valgte primærfarver - resten er op til den kunstneriske frihed :)",
+        "media_url": "https://storage.googleapis.com/malerier/bestilling.jpg",
+        "media_type": "image",
+        "button_text": "Kontakt os",
+        "button_link": "/contact?subject=bestilling"
+      }
+    ],
+    "promo_carousel_active": false
+  },
+  "contact": {
+    "title": "Kontakt Os",
+    "description": "Har du spørgsmål, er interesseret i et værk, eller ønsker du at diskutere en kommission? Tøv ikke med at række ud.",
+    "address": "Atelier i Slagelse (Besøg efter aftale)",
+    "boldsen": {
+      "email": "martin_boldsen@hotmail.com",
+      "phone": "+45 28 75 94 17",
+      "cvr": "41352280"
+    },
+    "zenia": {
+      "email": "anja.zenia@email.dk",
+      "phone": "+45 12 34 56 78",
+      "cvr": "12345678"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 Zenia & Boldsen. Alle rettigheder forbeholdes.",
+    "social_links": [
+      {
+        "platform": "instagram",
+        "url": "https://www.instagram.com/martin.boldsen/"
+      },
+      {
+        "platform": "facebook",
+        "url": "https://www.facebook.com/martin.boldsen.art"
+      }
+    ]
+  },
+  "exhibitions": {
+    "title": "Udstillinger & Samarbejder",
+    "description": "Gennem tiden har vi haft fornøjelsen af at udstille vores værker i forskellige sammenhænge og indgå samarbejder med passionerede gallerier. Her kan du se et udvalg af faste samarbejdspartnere samt glimt fra tidligere udstillinger.",
+    "gallery_title": "Stemningsbilleder fra div. udstilliinger",
+    "partners": [
+      {
+        "name": "Heimdall Gallery (France)",
+        "image_url": "https://storage.googleapis.com/malerier/Heimdall.jpeg",
+        "website": "https://heimdall-gallery.com/",
+        "description": "Heimdall is the only gallery in the world dedicated to contemporary Scandinavian art. In our exclusively Nordic selection, we showcase the unique mastery of artists whose craft is expressed through light, material, and precision.\n\nEach work is chosen with utmost care for its authenticity and timeless strength, offering our collectors a rare, intimate, and high-end experience. More than an exhibition space, Heimdall Gallery is a sanctuary where Nordic art is experienced as a discreet and refined luxury.",
+        "address": "2 Impasse Camp d’Ambel, 38250 Villard de Lans FRANCE",
+        "email": "andreas@heimdall-gallery.com",
+        "phone": "+33 768 63 42 66"
+      },
+      {
+        "name": "GALLERI &Os",
+        "image_url": "https://storage.googleapis.com/malerier/Galleri%26Os.jpg",
+        "website": "https://ogos.dk/",
+        "description": "Galleriet byder på både faste og skiftende udstillinger — med værker af lokale, nationale og internationale kunstnere og kunsthåndværkere. \n\nDer er fokus på samtidskunst: malerier, skulptur og kunsthåndværk i forskellig stil og udtryk. \n\nGalleriet forsøger at ramme et bredt publikum ved at kombinere kunstudstillinger med events og sociale rammer — for eksempel ved åbninger, receptioner og andre kunstrelaterede arrangementer.",
+        "address": "Strømgade 2, 9800 Hjørring",
+        "email": "galleri@ogos.dk",
+        "phone": "+45 41 93 77 41"
+      }
+    ],
+    "gallery_images": [
+      {
+        "url": "https://storage.googleapis.com/malerier/Sk%C3%A6rmbillede%202025-12-07%20130735.png",
+        "date": "2025-11-15",
+        "caption": "Strassbourg, November 2025"
+      },
+      {
+        "url": "https://storage.googleapis.com/malerier/20251115_090721.mp4",
+        "date": "2025-11-15",
+        "caption": "Viborg Kunstmesse, November 2025"
+      },
+      {
+        "url": "https://storage.googleapis.com/malerier/20251004_094547-COLLAGE.jpg",
+        "date": "2025-10-05",
+        "caption": "Nutids Kunst - Holstebro, Oktober 2015"
+      },
+      {
+        "url": "https://storage.googleapis.com/malerier/20250418_131725.jpg",
+        "date": "2025-04-18",
+        "caption": "Påskeudstilling Galleri&Os, April 2015"
+      },
+      {
+        "url": "https://storage.googleapis.com/malerier/20250321_181858.mp4",
+        "date": "2025-03-21",
+        "caption": "Viborg Kunstmesse, Marts 2025"
+      },
+      {
+        "url": "https://storage.googleapis.com/malerier/20250215_094627.jpg",
+        "date": "2025-02-15",
+        "caption": "Tidens Kunst Aars, Februar 2015"
+      },
+      {
+        "url": "https://storage.googleapis.com/malerier/MadBoligDesign.jpg",
+        "date": "2024-10-04",
+        "caption": "Mad, Bolig & Design - Forum, Oktober 2014"
+      },
+      {
+        "url": "https://storage.googleapis.com/malerier/IMG_20240913_135714322.jpg",
+        "date": "2024-09-13",
+        "caption": "Work Art's Fair - Århus, September 2024"
+      }
+    ]
+  },
+  "seo": {
+    "defaultTitle": "Zenia & Boldsen | Kunst og Keramik",
+    "titleTemplate": "%s | Zenia & Boldsen",
+    "description": "Udforsk unikke malerier af Martin Boldsen og håndlavet keramik af Anja Zenia. Et fælles kunstnerisk univers.",
+    "keywords": [
+      "kunst",
+      "galleri",
+      "malerier",
+      "keramik",
+      "martin boldsen",
+      "anja zenia",
+      "abstrakt kunst",
+      "moderne kunst",
+      "stentøj"
+    ],
+    "googleAnalyticsId": "",
+    "headerScript": "",
+    "ogImageUrl": "",
+    "secondaryGalleryActive": false,
+    "secondaryGalleryName": "Lagersalg",
+    "secondaryGalleryTitle": "Lagersalg",
+    "secondaryGalleryDescription": "Vi holder lagersalg for at rydde op og gøre plads til nye værker. Derfor kan disse kunstværker købes til en lavere pris. Der er intet galt med dem – de er skabt med samme omhu og kvalitet som alle vores øvrige værker."
+  },
+  "gallery": {
+    "title": "Udforsk Værkerne",
+    "description": "Velkommen til vores fælles galleri. Her kan du dykke ned i Martin Boldsens malerier og Anja Zenias keramiske værker."
+  }
+}

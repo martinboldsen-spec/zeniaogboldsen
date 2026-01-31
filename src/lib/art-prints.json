@@ -1,0 +1,232 @@
+{
+  "artPrints": [
+    {
+      "id": "primal-attraction",
+      "name": "Primal attraction",
+      "size": "70x90 cm",
+      "description": "Kunsttryk i 70x90 cm, trykt på 230g mat kvalitetspapir.",
+      "frameOptions": [
+        {
+          "id": "plain",
+          "description": "Uden ramme",
+          "url": "https://storage.googleapis.com/malerier/thumbnail_Primal%20Attraction.jpg",
+          "price": 550
+        },
+        {
+          "id": "black_frame",
+          "description": "Sort træramme",
+          "url": "https://storage.googleapis.com/malerier/SortRamme_Primal%20Attraction.jpg",
+          "price": 850
+        },
+        {
+          "id": "oak_frame",
+          "description": "Egetræsramme",
+          "url": "https://storage.googleapis.com/malerier/EgRamme_Primal%20Attraction%20(1).jpg",
+          "price": 950
+        }
+      ],
+      "galleryImages": [
+        {
+          "id": "gallery-primal-attraction-0",
+          "url": "https://storage.googleapis.com/malerier/Plakat6.jpg",
+          "alt": "Galleribillede 1 for Primal attraction"
+        },
+        {
+          "id": "gallery-primal-attraction-1",
+          "url": "https://storage.googleapis.com/malerier/NyePlakater.jpg",
+          "alt": "Galleribillede 2 for Primal attraction"
+        }
+      ]
+    },
+    {
+      "id": "my-best-friend",
+      "name": "My best friend",
+      "size": "70x90 cm",
+      "description": "Kunsttryk i 70x90 cm, trykt på 230g mat kvalitetspapir.",
+      "frameOptions": [
+        {
+          "id": "plain",
+          "description": "Uden ramme",
+          "url": "https://storage.googleapis.com/malerier/thumbnail_My%20best%20friend.jpg",
+          "price": 550
+        },
+        {
+          "id": "black_frame",
+          "description": "Sort træramme",
+          "url": "https://storage.googleapis.com/malerier/SortRamme_My%20best%20friend.jpg",
+          "price": 850
+        },
+        {
+          "id": "oak_frame",
+          "description": "Egetræsramme",
+          "url": "https://storage.googleapis.com/malerier/EgRamme_My%20best%20friend.jpg",
+          "price": 950
+        }
+      ],
+      "galleryImages": [
+        {
+          "id": "gallery-my-best-friend-0",
+          "url": "https://storage.googleapis.com/malerier/Plakat5.jpg",
+          "alt": "Galleribillede 1 for My best friend"
+        },
+        {
+          "id": "gallery-my-best-friend-1",
+          "url": "https://storage.googleapis.com/malerier/NyePlakater.jpg",
+          "alt": "Galleribillede 2 for My best friend"
+        }
+      ]
+    },
+    {
+      "id": "shes-a-dream",
+      "name": "She's a Dream",
+      "size": "70x90 cm",
+      "description": "Kunsttryk i 70x90 cm, trykt på 230g mat kvalitetspapir.",
+      "frameOptions": [
+        {
+          "id": "plain",
+          "description": "Uden ramme",
+          "url": "https://storage.googleapis.com/malerier/thumbnail_She%20is%20a%20dream.jpg",
+          "price": 550
+        },
+        {
+          "id": "black_frame",
+          "description": "Sort træramme",
+          "url": "https://storage.googleapis.com/malerier/SortRammel_She%20is%20a%20dream.jpg",
+          "price": 850
+        },
+        {
+          "id": "oak_frame",
+          "description": "Egetræsramme",
+          "url": "https://storage.googleapis.com/malerier/EgRamme_She%20is%20a%20dream.jpg",
+          "price": 950
+        }
+      ],
+      "galleryImages": [
+        {
+          "id": "gallery-shes-a-dream-0",
+          "url": "https://storage.googleapis.com/malerier/Plakat4.jpg",
+          "alt": "Galleribillede 1 for She's a Dream"
+        },
+        {
+          "id": "gallery-shes-a-dream-1",
+          "url": "https://storage.googleapis.com/malerier/NyePlakater.jpg",
+          "alt": "Galleribillede 2 for She's a Dream"
+        }
+      ]
+    },
+    {
+      "id": "us-against-them",
+      "name": "Us Against Them",
+      "size": "70x90 cm",
+      "description": "Kunsttryk i 70x90 cm, trykt på 230g mat kvalitetspapir.",
+      "frameOptions": [
+        {
+          "id": "plain",
+          "description": "Uden ramme",
+          "url": "https://storage.googleapis.com/malerier/thumbnail_Us%20against%20them.jpg",
+          "price": 550
+        },
+        {
+          "id": "black_frame",
+          "description": "Sort træramme",
+          "url": "https://storage.googleapis.com/malerier/SortRamme_Us%20against%20them.jpg",
+          "price": 850
+        },
+        {
+          "id": "oak_frame",
+          "description": "Egetræsramme",
+          "url": "https://storage.googleapis.com/malerier/EgRamme_Us%20against%20them.jpg",
+          "price": 950
+        }
+      ],
+      "galleryImages": [
+        {
+          "id": "gallery-us-against-them-0",
+          "url": "https://storage.googleapis.com/malerier/Plakat2.jpg",
+          "alt": "Galleribillede 1 for Us Against Them"
+        },
+        {
+          "id": "gallery-us-against-them-1",
+          "url": "https://storage.googleapis.com/malerier/GamlePlakater.jpg",
+          "alt": "Galleribillede 2 for Us Against Them"
+        }
+      ]
+    },
+    {
+      "id": "sincerely-yours",
+      "name": "Sincerely Yours",
+      "size": "70x90 cm",
+      "description": "Kunsttryk i 70x90 cm, trykt på 230g mat kvalitetspapir.",
+      "frameOptions": [
+        {
+          "id": "plain",
+          "description": "Uden ramme",
+          "url": "https://storage.googleapis.com/malerier/thumbnail_Sincerely%20yours.jpg",
+          "price": 550
+        },
+        {
+          "id": "black_frame",
+          "description": "Sort træramme",
+          "url": "https://storage.googleapis.com/malerier/SortRamme_Sincerely%20yours.jpg",
+          "price": 850
+        },
+        {
+          "id": "oak_frame",
+          "description": "Egetræsramme",
+          "url": "https://storage.googleapis.com/malerier/EgRamme_Sincerely%20yours.jpg",
+          "price": 950
+        }
+      ],
+      "galleryImages": [
+        {
+          "id": "gallery-sincerely-yours-0",
+          "url": "https://storage.googleapis.com/malerier/PLakat3.jpg",
+          "alt": "Galleribillede 1 for Sincerely Yours"
+        },
+        {
+          "id": "gallery-sincerely-yours-1",
+          "url": "https://storage.googleapis.com/malerier/GamlePlakater.jpg",
+          "alt": "Galleribillede 2 for Sincerely Yours"
+        }
+      ]
+    },
+    {
+      "id": "you-encourage-me",
+      "name": "You encourage Me",
+      "size": "70x90 cm",
+      "description": "Kunsttryk i 70x90 cm, trykt på 230g mat kvalitetspapir.",
+      "frameOptions": [
+        {
+          "id": "plain",
+          "description": "Uden ramme",
+          "url": "https://storage.googleapis.com/malerier/You%20encourage%20me.jpg",
+          "price": 550
+        },
+        {
+          "id": "black_frame",
+          "description": "Sort træramme",
+          "url": "https://storage.googleapis.com/malerier/SortRamme_You%20encourage%20me.jpg",
+          "price": 850
+        },
+        {
+          "id": "oak_frame",
+          "description": "Egetræsramme",
+          "url": "https://storage.googleapis.com/malerier/EgRamme_You%20encourage%20me.jpg",
+          "price": 950
+        }
+      ],
+      "galleryImages": [
+        {
+          "id": "gallery-you-encourage-me-0",
+          "url": "https://storage.googleapis.com/malerier/Plakat1.jpg",
+          "alt": "Galleribillede 1 for You encourage Me"
+        },
+        {
+          "id": "gallery-you-encourage-me-1",
+          "url": "https://storage.googleapis.com/malerier/GamlePlakater.jpg",
+          "alt": "Galleribillede 2 for You encourage Me"
+        }
+      ]
+    }
+  ]
+}
