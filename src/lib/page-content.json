@@ -67,11 +67,20 @@
       "email": "anja.zenia@email.dk",
       "phone": "+45 12 34 56 78",
       "cvr": "12345678",
-      "social_links": []
+      "social_links": [
+        {
+          "platform": "facebook",
+          "url": "https://www.facebook.com/profile.php?id=61557229633089"
+        },
+        {
+          "platform": "instagram",
+          "url": "https://www.instagram.com/keramikbilledekunstzenia/"
+        }
+      ]
     }
   },
   "footer": {
-    "copyright": "© 2024 Zenia & Boldsen. Alle rettigheder forbeholdes."
+    "copyright": "© 2026 Zenia & Boldsen. Alle rettigheder forbeholdes."
   },
   "exhibitions": {
     "title": "Udstillinger & Samarbejder",
