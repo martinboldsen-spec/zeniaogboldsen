@@ -53,72 +53,74 @@ export default function ExhibitionsPageClient({ title, description, partners, ga
             </div>
 
             {/* Faste Samarbejdspartnere */}
-            <section className="mb-16">
-                <h2 className="text-3xl font-headline text-center text-primary mb-8">Faste Samarbejdspartnere</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    {partners.map((partner, index) => (
-                        <Card key={index} className="flex flex-col">
-                            <CardHeader className="flex-shrink-0">
-                                {partner.image_url && (
-                                    <div className="relative aspect-video w-full overflow-hidden mb-4">
-                                        <Image
-                                            src={partner.image_url}
-                                            alt={partner.name}
-                                            fill
-                                            unoptimized={true}
-                                            className="object-cover"
-                                            sizes="(max-width: 768px) 100vw, 50vw"
-                                        />
-                                    </div>
-                                )}
-                                <CardTitle className="font-headline text-2xl text-primary">{partner.name}</CardTitle>
-                            </CardHeader>
-                            <CardContent className="flex flex-col flex-grow space-y-4">
-                                <p className="text-muted-foreground flex-grow">{partner.description}</p>
-                                <div className="space-y-3 pt-4 border-t">
-                                    <div className="flex items-start gap-3">
-                                        <MapPin className="h-5 w-5 mt-1 text-accent flex-shrink-0" />
-                                        <div>
-                                            <h4 className="font-semibold">Adresse</h4>
-                                            <p className="text-sm">{partner.address}</p>
+            {partners && partners.length > 0 && (
+                <section className="mb-16">
+                    <h2 className="text-3xl font-headline text-center text-primary mb-8">Faste Samarbejdspartnere</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                        {partners.map((partner, index) => (
+                            <Card key={index} className="flex flex-col">
+                                <CardHeader className="flex-shrink-0">
+                                    {partner.image_url && (
+                                        <div className="relative aspect-video w-full overflow-hidden mb-4">
+                                            <Image
+                                                src={partner.image_url}
+                                                alt={partner.name}
+                                                fill
+                                                unoptimized={true}
+                                                className="object-cover"
+                                                sizes="(max-width: 768px) 100vw, 50vw"
+                                            />
                                         </div>
-                                    </div>
-                                    {partner.website && (
-                                    <div className="flex items-start gap-3">
-                                        <LinkIcon className="h-5 w-5 mt-1 text-accent flex-shrink-0" />
-                                        <div>
-                                            <h4 className="font-semibold">Hjemmeside</h4>
-                                            <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline">{partner.website}</a>
-                                        </div>
-                                    </div>
                                     )}
-                                    <div className="flex items-start gap-3">
-                                        <Mail className="h-5 w-5 mt-1 text-accent flex-shrink-0" />
-                                        <div>
-                                            <h4 className="font-semibold">Email</h4>
-                                            <a href={`mailto:${partner.email}`} className="text-sm hoverunderline">{partner.email}</a>
+                                    <CardTitle className="font-headline text-2xl text-primary">{partner.name}</CardTitle>
+                                </CardHeader>
+                                <CardContent className="flex flex-col flex-grow space-y-4">
+                                    <p className="text-muted-foreground flex-grow">{partner.description}</p>
+                                    <div className="space-y-3 pt-4 border-t">
+                                        <div className="flex items-start gap-3">
+                                            <MapPin className="h-5 w-5 mt-1 text-accent flex-shrink-0" />
+                                            <div>
+                                                <h4 className="font-semibold">Adresse</h4>
+                                                <p className="text-sm">{partner.address}</p>
+                                            </div>
+                                        </div>
+                                        {partner.website && (
+                                        <div className="flex items-start gap-3">
+                                            <LinkIcon className="h-5 w-5 mt-1 text-accent flex-shrink-0" />
+                                            <div>
+                                                <h4 className="font-semibold">Hjemmeside</h4>
+                                                <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline">{partner.website}</a>
+                                            </div>
+                                        </div>
+                                        )}
+                                        <div className="flex items-start gap-3">
+                                            <Mail className="h-5 w-5 mt-1 text-accent flex-shrink-0" />
+                                            <div>
+                                                <h4 className="font-semibold">Email</h4>
+                                                <a href={`mailto:${partner.email}`} className="text-sm hoverunderline">{partner.email}</a>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <Phone className="h-5 w-5 mt-1 text-accent flex-shrink-0" />
+                                            <div>
+                                                <h4 className="font-semibold">Telefon</h4>
+                                                <a href={`tel:${partner.phone.replace(/\s/g, '')}`} className="text-sm hover:underline">{partner.phone}</a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="flex items-start gap-3">
-                                        <Phone className="h-5 w-5 mt-1 text-accent flex-shrink-0" />
-                                        <div>
-                                            <h4 className="font-semibold">Telefon</h4>
-                                            <a href={`tel:${partner.phone.replace(/\s/g, '')}`} className="text-sm hover:underline">{partner.phone}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                              {partner.website && (
-                                <CardFooter>
-                                    <Button asChild className="w-full">
-                                        <a href={partner.website} target="_blank" rel="noopener noreferrer">Besøg Hjemmeside</a>
-                                    </Button>
-                                </CardFooter>
-                            )}
-                        </Card>
-                    ))}
-                </div>
-            </section>
+                                </CardContent>
+                                  {partner.website && (
+                                    <CardFooter>
+                                        <Button asChild className="w-full">
+                                            <a href={partner.website} target="_blank" rel="noopener noreferrer">Besøg Hjemmeside</a>
+                                        </Button>
+                                    </CardFooter>
+                                )}
+                            </Card>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {/* Billedgalleri */}
             <section>
@@ -142,8 +144,10 @@ export default function ExhibitionsPageClient({ title, description, partners, ga
                                                         muted
                                                         playsInline
                                                         loop
+                                                        autoPlay
+                                                        preload="metadata"
                                                     />
-                                                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer transition-opacity opacity-0 group-hover:opacity-100">
+                                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer opacity-80 transition-opacity group-hover:opacity-100">
                                                         <PlayCircle className="w-16 h-16 text-white/80" />
                                                     </div>
                                                 </>
