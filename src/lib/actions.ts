@@ -3,7 +3,7 @@
 
 import { z } from "zod";
 import { updateArtwork, type Artwork } from "@/lib/artwork-service";
-import { updatePageContent, type GalleryPageContent, type ExhibitionsPageContent, type SeoPageContent, type HomePageContent, type PromoCarouselSlide, getPageContent, type FooterPageContent, type AboutPageContent, type ContactPageContent } from "@/lib/page-content-service";
+import { updatePageContent, type GalleryPageContent, type ExhibitionsPageContent, type SeoPageContent, type HomePageContent, type PromoCarouselSlide, getPageContent, type FooterPageContent, type AboutPageContent, type ContactPageContent, IndividualContactInfo } from "@/lib/page-content-service";
 import { ArtPrint, ArtPrintFrameOption, ArtPrintGalleryImage, updateArtPrints, getAllArtPrints as getAllArtPrintsData } from "@/lib/art-print-service";
 import { revalidatePath } from "next/cache";
 import { sendContactEmail } from "@/lib/email";
@@ -143,6 +143,8 @@ const aboutPageSchema = z.object({
     boldsen_content: z.string(),
     zenia_image_url: z.string().url("Ugyldig URL til Anja Zenia billede."),
     zenia_content: z.string(),
+    boldsen_website_url: z.string().url("Ugyldig URL for Boldsen hjemmeside").or(z.literal('')).optional(),
+    zenia_website_url: z.string().url("Ugyldig URL for Zenia hjemmeside").or(z.literal('')).optional(),
 });
 
 export async function updateAboutPageAction(prevState: any, formData: FormData) {
@@ -209,6 +211,8 @@ export async function updateHomePageAction(prevState: any, formData: FormData) {
     ]
   );
   
+  dataToValidate.promo_carousel_active = formData.get('promo_carousel_active') === 'on';
+
   // Quick validation for URLs
   if (dataToValidate.home_hero_image_url && !dataToValidate.home_hero_image_url.startsWith('http')) return { message: "Hero billede URL er ugyldig." };
   if (dataToValidate.home_intro_image_url && !dataToValidate.home_intro_image_url.startsWith('http')) return { message: "Intro billede URL er ugyldig." };
@@ -226,16 +230,40 @@ export async function updateHomePageAction(prevState: any, formData: FormData) {
   return { message: "Forsiden er blevet opdateret." };
 }
 
-
-const contactPageSchema = z.object({
+const individualContactSchema = z.object({
     email: z.string().email("Ugyldig email."),
     phone: z.string(),
-    address: z.string(),
     cvr: z.string(),
 });
 
+const contactPageSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  address: z.string(),
+  boldsen: individualContactSchema,
+  zenia: individualContactSchema
+});
+
 export async function updateContactPageAction(prevState: any, formData: FormData) {
-  const validatedFields = contactPageSchema.safeParse(Object.fromEntries(formData.entries()));
+    const rawData = Object.fromEntries(formData.entries());
+    
+    const dataToValidate = {
+        title: rawData.title,
+        description: rawData.description,
+        address: rawData.address,
+        boldsen: {
+            email: rawData.boldsen_email,
+            phone: rawData.boldsen_phone,
+            cvr: rawData.boldsen_cvr
+        },
+        zenia: {
+            email: rawData.zenia_email,
+            phone: rawData.zenia_phone,
+            cvr: rawData.zenia_cvr
+        }
+    };
+
+  const validatedFields = contactPageSchema.safeParse(dataToValidate);
 
   if (!validatedFields.success) {
     return {
