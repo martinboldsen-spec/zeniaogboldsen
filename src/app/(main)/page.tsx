@@ -106,7 +106,7 @@ export default async function HomePage() {
             data-ai-hint="art gallery interior"
             priority
           />
-          <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-center md:justify-start md:text-left p-4 md:p-12">
+          <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-center p-4 md:p-12">
             <div className="max-w-md bg-black/50 backdrop-blur-sm p-6 md:p-8 rounded-sm space-y-3">
               <Image
                 src={logoUrl}
@@ -114,7 +114,7 @@ export default async function HomePage() {
                 width={200}
                 height={200}
                 unoptimized={true}
-                className="h-16 md:h-20 w-auto object-contain mx-auto md:mx-0 invert"
+                className="h-16 md:h-20 w-auto object-contain mx-auto invert"
                 priority
               />
               <h1 className="text-3xl md:text-5xl font-bold font-headline text-white drop-shadow-lg">
