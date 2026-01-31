@@ -51,26 +51,27 @@
     "boldsen": {
       "email": "martin_boldsen@hotmail.com",
       "phone": "+45 28 75 94 17",
-      "cvr": "41352280"
+      "cvr": "41352280",
+      "social_links": [
+        {
+          "platform": "instagram",
+          "url": "https://www.instagram.com/martin.boldsen/"
+        },
+        {
+          "platform": "facebook",
+          "url": "https://www.facebook.com/martin.boldsen.art"
+        }
+      ]
     },
     "zenia": {
       "email": "anja.zenia@email.dk",
       "phone": "+45 12 34 56 78",
-      "cvr": "12345678"
+      "cvr": "12345678",
+      "social_links": []
     }
   },
   "footer": {
-    "copyright": "© 2024 Zenia & Boldsen. Alle rettigheder forbeholdes.",
-    "social_links": [
-      {
-        "platform": "instagram",
-        "url": "https://www.instagram.com/martin.boldsen/"
-      },
-      {
-        "platform": "facebook",
-        "url": "https://www.facebook.com/martin.boldsen.art"
-      }
-    ]
+    "copyright": "© 2024 Zenia & Boldsen. Alle rettigheder forbeholdes."
   },
   "exhibitions": {
     "title": "Udstillinger & Samarbejder",

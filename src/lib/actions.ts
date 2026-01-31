@@ -3,29 +3,50 @@
 
 import { z } from "zod";
 import { updateArtwork, type Artwork } from "@/lib/artwork-service";
-import { updatePageContent, type GalleryPageContent, type ExhibitionsPageContent, type SeoPageContent, type HomePageContent, type PromoCarouselSlide, getPageContent, type FooterPageContent, type AboutPageContent, type ContactPageContent, IndividualContactInfo } from "@/lib/page-content-service";
-import { ArtPrint, ArtPrintFrameOption, ArtPrintGalleryImage, updateArtPrints, getAllArtPrints as getAllArtPrintsData } from "@/lib/art-print-service";
+import {
+  updatePageContent,
+  type GalleryPageContent,
+  type ExhibitionsPageContent,
+  type SeoPageContent,
+  type HomePageContent,
+  type PromoCarouselSlide,
+  getPageContent,
+  type FooterPageContent,
+  type AboutPageContent,
+  type ContactPageContent,
+  type IndividualContactInfo,
+  type FooterSocialLink,
+} from "@/lib/page-content-service";
+import {
+  ArtPrint,
+  ArtPrintFrameOption,
+  ArtPrintGalleryImage,
+  updateArtPrints,
+  getAllArtPrints as getAllArtPrintsData,
+} from "@/lib/art-print-service";
 import { revalidatePath } from "next/cache";
 import { sendContactEmail } from "@/lib/email";
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { getIronSession } from 'iron-session';
-import { sessionOptions } from '@/lib/session';
-
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { getIronSession } from "iron-session";
+import { sessionOptions } from "@/lib/session";
 
 export async function authenticate(
   prevState: string | undefined,
-  formData: FormData,
+  formData: FormData
 ) {
   try {
     const { username, password } = Object.fromEntries(formData.entries());
-    
-    if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) {
+
+    if (
+      username === process.env.ADMIN_USER &&
+      password === process.env.ADMIN_PASS
+    ) {
       const session = await getIronSession(cookies(), sessionOptions);
       session.isLoggedIn = true;
       await session.save();
     } else {
-        return 'Brugernavn eller adgangskode er forkert.';
+      return 'Brugernavn eller adgangskode er forkert.';
     }
   } catch (error) {
     if ((error as Error).message.includes('credentialssignin')) {
@@ -39,17 +60,16 @@ export async function authenticate(
 }
 
 export async function logout() {
-    'use server'
-    const session = await getIronSession(cookies(), sessionOptions);
-    session.destroy();
-    redirect('/login');
+  'use server';
+  const session = await getIronSession(cookies(), sessionOptions);
+  session.destroy();
+  redirect('/login');
 }
 
-
 const contactSchema = z.object({
-  name: z.string().min(2, "Navn skal være mindst 2 tegn."),
-  email: z.string().email("Ugyldig email-adresse."),
-  message: z.string().min(10, "Besked skal være mindst 10 tegn."),
+  name: z.string().min(2, 'Navn skal være mindst 2 tegn.'),
+  email: z.string().email('Ugyldig email-adresse.'),
+  message: z.string().min(10, 'Besked skal være mindst 10 tegn.'),
   artwork: z.string().optional(),
   subject: z.string().optional(),
   from_cart: z.string().optional(),
@@ -63,16 +83,19 @@ type FormState = {
     message?: string[];
   };
   success?: boolean;
-}
+};
 
-export async function submitContactForm(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function submitContactForm(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
   const rawData = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    message: formData.get("message"),
-    artwork: formData.get("artwork") || undefined,
-    subject: formData.get("subject") || undefined,
-    from_cart: formData.get("from_cart") || undefined,
+    name: formData.get('name'),
+    email: formData.get('email'),
+    message: formData.get('message'),
+    artwork: formData.get('artwork') || undefined,
+    subject: formData.get('subject') || undefined,
+    from_cart: formData.get('from_cart') || undefined,
   };
 
   const validatedFields = contactSchema.safeParse(rawData);
@@ -80,84 +103,106 @@ export async function submitContactForm(prevState: FormState, formData: FormData
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Udfyld venligst alle felter korrekt.",
+      message: 'Udfyld venligst alle felter korrekt.',
       success: false,
     };
   }
 
   try {
     await sendContactEmail(validatedFields.data);
-    
+
     // Check if the submission is from the cart
-    if(validatedFields.data.from_cart) {
-        return { message: "Tak for din besked! Din forespørgsel er sendt og din kurv er nu tømt.", success: true };
+    if (validatedFields.data.from_cart) {
+      return {
+        message:
+          'Tak for din besked! Din forespørgsel er sendt og din kurv er nu tømt.',
+        success: true,
+      };
     }
 
-    return { message: "Tak for din besked! Jeg vender tilbage hurtigst muligt.", success: true };
-  } catch (error) {
-    console.error("Email sending failed:", error);
     return {
-      message: "Der opstod en fejl under afsendelse af din besked. Prøv venligst igen.",
+      message: 'Tak for din besked! Jeg vender tilbage hurtigst muligt.',
+      success: true,
+    };
+  } catch (error) {
+    console.error('Email sending failed:', error);
+    return {
+      message:
+        'Der opstod en fejl under afsendelse af din besked. Prøv venligst igen.',
       errors: {},
-      success: false
+      success: false,
     };
   }
 }
 
-export async function updateArtworkAction(prevState: any, formData: FormData): Promise<{message: string; errors?: boolean}> {
-    const id = formData.get("id") as string;
-    if (!id) {
-        return { message: "Mangler ID for kunstværk.", errors: true };
-    }
+export async function updateArtworkAction(
+  prevState: any,
+  formData: FormData
+): Promise<{ message: string; errors?: boolean }> {
+  const id = formData.get('id') as string;
+  if (!id) {
+    return { message: 'Mangler ID for kunstværk.', errors: true };
+  }
 
-    const dataToUpdate: Partial<Artwork> = {
-        description: formData.get('description') as string,
-        price: Number(formData.get('price')),
-        discount: formData.get('discount') ? Number(formData.get('discount')) : 0, 
-        status: formData.get('status') as 'available' | 'sold',
-        atGallery: formData.get('atGallery') === 'on',
-        isSecondary: formData.get('isSecondary') === 'on'
-    };
+  const dataToUpdate: Partial<Artwork> = {
+    description: formData.get('description') as string,
+    price: Number(formData.get('price')),
+    discount: formData.get('discount') ? Number(formData.get('discount')) : 0,
+    status: formData.get('status') as 'available' | 'sold',
+    atGallery: formData.get('atGallery') === 'on',
+    isSecondary: formData.get('isSecondary') === 'on',
+  };
 
-    const { success, error } = await updateArtwork(id, dataToUpdate);
+  const { success, error } = await updateArtwork(id, dataToUpdate);
 
-    if (error) {
-        return { message: `Fejl: ${error}`, errors: true };
-    }
+  if (error) {
+    return { message: `Fejl: ${error}`, errors: true };
+  }
 
-    // Revalidate paths to show the updated data
-    revalidatePath(`/admin/edit/${id}`);
-    revalidatePath(`/admin/artworks`);
-    revalidatePath(`/artwork/${id}`);
-    revalidatePath('/');
-    revalidatePath('/galleri');
-    revalidatePath('/lagersalg');
+  // Revalidate paths to show the updated data
+  revalidatePath(`/admin/edit/${id}`);
+  revalidatePath(`/admin/artworks`);
+  revalidatePath(`/artwork/${id}`);
+  revalidatePath('/');
+  revalidatePath('/galleri');
+  revalidatePath('/lagersalg');
 
-    return { message: "Værket er blevet opdateret." };
+  return { message: 'Værket er blevet opdateret.' };
 }
 
-
 const aboutPageSchema = z.object({
-    title: z.string(),
-    boldsen_image_url: z.string().url("Ugyldig URL til Martin Boldsen billede."),
-    boldsen_content: z.string(),
-    zenia_image_url: z.string().url("Ugyldig URL til Anja Zenia billede."),
-    zenia_content: z.string(),
-    boldsen_website_url: z.string().url("Ugyldig URL for Boldsen hjemmeside").or(z.literal('')).optional(),
-    zenia_website_url: z.string().url("Ugyldig URL for Zenia hjemmeside").or(z.literal('')).optional(),
+  title: z.string(),
+  boldsen_image_url: z.string().url('Ugyldig URL til Martin Boldsen billede.'),
+  boldsen_content: z.string(),
+  zenia_image_url: z.string().url('Ugyldig URL til Anja Zenia billede.'),
+  zenia_content: z.string(),
+  boldsen_website_url: z
+    .string()
+    .url('Ugyldig URL for Boldsen hjemmeside')
+    .or(z.literal(''))
+    .optional(),
+  zenia_website_url: z
+    .string()
+    .url('Ugyldig URL for Zenia hjemmeside')
+    .or(z.literal(''))
+    .optional(),
 });
 
 export async function updateAboutPageAction(prevState: any, formData: FormData) {
-  const validatedFields = aboutPageSchema.safeParse(Object.fromEntries(formData.entries()));
+  const validatedFields = aboutPageSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Data er ugyldig.",
+      message: 'Data er ugyldig.',
     };
   }
 
-  const { success, error } = await updatePageContent({ about: validatedFields.data as AboutPageContent });
+  const { success, error } = await updatePageContent({
+    about: validatedFields.data as AboutPageContent,
+  });
 
   if (!success) {
     return { message: `Fejl: ${error}` };
@@ -165,75 +210,126 @@ export async function updateAboutPageAction(prevState: any, formData: FormData) 
 
   revalidatePath('/about');
   revalidatePath('/admin/edit-content/about');
-  
+
   return { message: "Siden 'Om Os' er blevet opdateret." };
 }
 
-function parseDynamicFormData(formData: FormData, topLevelKeys: string[], listKeys: { listName: string, itemKeys: string[], primaryKey: string, maxItems: number }[]) {
-    const rawData = Object.fromEntries(formData.entries());
-    const dataToValidate: { [key: string]: any } = {};
+function parseDynamicFormData(
+  formData: FormData,
+  topLevelKeys: string[],
+  listKeys: {
+    listName: string;
+    itemKeys: string[];
+    primaryKey: string;
+    maxItems: number;
+  }[]
+) {
+  const rawData = Object.fromEntries(formData.entries());
+  const dataToValidate: { [key: string]: any } = {};
 
-    topLevelKeys.forEach(key => {
-        dataToValidate[key] = rawData[key];
-    });
+  topLevelKeys.forEach((key) => {
+    dataToValidate[key] = rawData[key];
+  });
 
-    listKeys.forEach(({ listName, itemKeys, primaryKey, maxItems }) => {
-        const items = [];
-        for (let i = 0; i < maxItems; i++) {
-            const item: { [key: string]: any } = {};
-            let hasValue = false;
-            
-            itemKeys.forEach(key => {
-                const formKey = `${listName}.${i}.${key}`;
-                const value = rawData[formKey] as string;
-                if (value) {
-                    item[key] = value;
-                    hasValue = true;
-                }
-            });
-            // Only add the item if its primary key (e.g., name, title, or url) has a value.
-            if (hasValue && item[primaryKey]) {
-                items.push(item);
-            }
+  listKeys.forEach(({ listName, itemKeys, primaryKey, maxItems }) => {
+    const items = [];
+    for (let i = 0; i < maxItems; i++) {
+      const item: { [key: string]: any } = {};
+      let hasValue = false;
+
+      itemKeys.forEach((key) => {
+        const formKey = `${listName}.${i}.${key}`;
+        const value = rawData[formKey] as string;
+        if (value) {
+          item[key] = value;
+          hasValue = true;
         }
-        dataToValidate[listName] = items;
-    });
-    
-    return dataToValidate;
+      });
+      // Only add the item if its primary key (e.g., name, title, or url) has a value.
+      if (hasValue && item[primaryKey]) {
+        items.push(item);
+      }
+    }
+    dataToValidate[listName] = items;
+  });
+
+  return dataToValidate;
 }
 
 export async function updateHomePageAction(prevState: any, formData: FormData) {
   const dataToValidate = parseDynamicFormData(
     formData,
-    ['home_hero_title', 'home_hero_subtitle', 'home_hero_image_url', 'home_intro_title', 'home_intro_content', 'home_intro_signature', 'home_intro_image_url'],
     [
-      { listName: 'promo_carousel_slides', itemKeys: ['title', 'description', 'media_url', 'media_type', 'button_text', 'button_link'], primaryKey: 'title', maxItems: 4 }
+      'home_hero_title',
+      'home_hero_subtitle',
+      'home_hero_image_url',
+      'home_intro_title',
+      'home_intro_content',
+      'home_intro_signature',
+      'home_intro_image_url',
+    ],
+    [
+      {
+        listName: 'promo_carousel_slides',
+        itemKeys: [
+          'title',
+          'description',
+          'media_url',
+          'media_type',
+          'button_text',
+          'button_link',
+        ],
+        primaryKey: 'title',
+        maxItems: 4,
+      },
     ]
   );
-  
-  dataToValidate.promo_carousel_active = formData.get('promo_carousel_active') === 'on';
+
+  dataToValidate.promo_carousel_active =
+    formData.get('promo_carousel_active') === 'on';
 
   // Quick validation for URLs
-  if (dataToValidate.home_hero_image_url && !dataToValidate.home_hero_image_url.startsWith('http')) return { message: "Hero billede URL er ugyldig." };
-  if (dataToValidate.home_intro_image_url && !dataToValidate.home_intro_image_url.startsWith('http')) return { message: "Intro billede URL er ugyldig." };
+  if (
+    dataToValidate.home_hero_image_url &&
+    !dataToValidate.home_hero_image_url.startsWith('http')
+  )
+    return { message: 'Hero billede URL er ugyldig.' };
+  if (
+    dataToValidate.home_intro_image_url &&
+    !dataToValidate.home_intro_image_url.startsWith('http')
+  )
+    return { message: 'Intro billede URL er ugyldig.' };
 
+  const { success, error } = await updatePageContent({
+    home: dataToValidate as HomePageContent,
+  });
 
-  const { success, error } = await updatePageContent({ home: dataToValidate as HomePageContent });
-  
   if (!success) {
     return { message: `Fejl: ${error}` };
   }
 
   revalidatePath('/');
   revalidatePath('/admin/edit-content/home');
-  
-  return { message: "Forsiden er blevet opdateret." };
+
+  return { message: 'Forsiden er blevet opdateret.' };
 }
 
+const socialLinkSchema = z.object({
+  platform: z.enum([
+    'instagram',
+    'facebook',
+    'linkedin',
+    'twitter',
+    'youtube',
+  ]),
+  url: z.string().url('Ugyldig social medie URL.'),
+});
+
 const individualContactSchema = z.object({
-    email: z.string().email("Ugyldig email."),
-    phone: z.string(),
-    cvr: z.string(),
+  email: z.string().email('Ugyldig email.'),
+  phone: z.string(),
+  cvr: z.string(),
+  social_links: z.array(socialLinkSchema).optional(),
 });
 
 const contactPageSchema = z.object({
@@ -241,142 +337,201 @@ const contactPageSchema = z.object({
   description: z.string(),
   address: z.string(),
   boldsen: individualContactSchema,
-  zenia: individualContactSchema
+  zenia: individualContactSchema,
 });
 
-export async function updateContactPageAction(prevState: any, formData: FormData) {
-    const rawData = Object.fromEntries(formData.entries());
-    
-    const dataToValidate = {
-        title: rawData.title,
-        description: rawData.description,
-        address: rawData.address,
-        boldsen: {
-            email: rawData.boldsen_email,
-            phone: rawData.boldsen_phone,
-            cvr: rawData.boldsen_cvr
-        },
-        zenia: {
-            email: rawData.zenia_email,
-            phone: rawData.zenia_phone,
-            cvr: rawData.zenia_cvr
-        }
-    };
+export async function updateContactPageAction(
+  prevState: any,
+  formData: FormData
+) {
+  const rawData = Object.fromEntries(formData.entries());
+
+  const boldsenSocialLinks: FooterSocialLink[] = [];
+  for (let i = 0; i < 2; i++) {
+    const platform =
+      rawData[`boldsen_social_links.${i}.platform`] as FooterSocialLink['platform'];
+    const url = rawData[`boldsen_social_links.${i}.url`] as string;
+    if (platform && url) {
+      boldsenSocialLinks.push({ platform, url });
+    }
+  }
+
+  const zeniaSocialLinks: FooterSocialLink[] = [];
+  for (let i = 0; i < 2; i++) {
+    const platform =
+      rawData[`zenia_social_links.${i}.platform`] as FooterSocialLink['platform'];
+    const url = rawData[`zenia_social_links.${i}.url`] as string;
+    if (platform && url) {
+      zeniaSocialLinks.push({ platform, url });
+    }
+  }
+
+  const dataToValidate = {
+    title: rawData.title,
+    description: rawData.description,
+    address: rawData.address,
+    boldsen: {
+      email: rawData.boldsen_email,
+      phone: rawData.boldsen_phone,
+      cvr: rawData.boldsen_cvr,
+      social_links: boldsenSocialLinks,
+    },
+    zenia: {
+      email: rawData.zenia_email,
+      phone: rawData.zenia_phone,
+      cvr: rawData.zenia_cvr,
+      social_links: zeniaSocialLinks,
+    },
+  };
 
   const validatedFields = contactPageSchema.safeParse(dataToValidate);
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Data er ugyldig.",
+      message: 'Data er ugyldig.',
     };
   }
 
-  const { success, error } = await updatePageContent({ contact: validatedFields.data as ContactPageContent });
-  
+  const { success, error } = await updatePageContent({
+    contact: validatedFields.data as ContactPageContent,
+  });
+
   if (!success) {
     return { message: `Fejl: ${error}` };
   }
 
   revalidatePath('/contact');
   revalidatePath('/admin/edit-content/contact');
-  
-  return { message: "Kontaktsiden er blevet opdateret." };
+  revalidatePath('/'); // For homepage boxes
+
+  return { message: 'Kontaktsiden er blevet opdateret.' };
 }
 
 export async function updateFooterPageAction(prevState: any, formData: FormData) {
-    const rawData = Object.fromEntries(formData.entries());
+  const rawData = Object.fromEntries(formData.entries());
 
-    const socialLinks = [];
-    for (let i = 0; i < 4; i++) {
-        const platform = rawData[`social_links.${i}.platform`] as FooterSocialLink['platform'];
-        const url = rawData[`social_links.${i}.url`] as string;
-        if (platform && url) {
-            socialLinks.push({ platform, url });
-        }
-    }
+  const dataToValidate: FooterPageContent = {
+    copyright: rawData.copyright as string,
+  };
 
-    const dataToValidate: FooterPageContent = {
-        copyright: rawData.copyright as string,
-        social_links: socialLinks
-    }
-  
-    const { success, error } = await updatePageContent({ footer: dataToValidate });
-  
-    if (!success) {
-      return { message: `Fejl: ${error}` };
-    }
-  
-    revalidatePath('/', 'layout'); // Revalidate root to update footer everywhere
-    revalidatePath('/admin/edit-content/footer');
-    
-    return { message: "Footer er blevet opdateret." };
+  const { success, error } = await updatePageContent({
+    footer: dataToValidate,
+  });
+
+  if (!success) {
+    return { message: `Fejl: ${error}` };
+  }
+
+  revalidatePath('/', 'layout'); // Revalidate root to update footer everywhere
+  revalidatePath('/admin/edit-content/footer');
+
+  return { message: 'Footer er blevet opdateret.' };
 }
 
-export async function updateExhibitionsPageAction(prevState: any, formData: FormData): Promise<{message: string}> {
-    const dataToValidate = parseDynamicFormData(
-        formData,
-        ['title', 'description', 'gallery_title'],
-        [
-            { listName: 'partners', itemKeys: ['name', 'image_url', 'website', 'description', 'address', 'email', 'phone'], primaryKey: 'name', maxItems: 4 },
-            { listName: 'gallery_images', itemKeys: ['url', 'date', 'caption'], primaryKey: 'url', maxItems: 12 }
-        ]
-    );
+export async function updateExhibitionsPageAction(
+  prevState: any,
+  formData: FormData
+): Promise<{ message: string }> {
+  const dataToValidate = parseDynamicFormData(
+    formData,
+    ['title', 'description', 'gallery_title'],
+    [
+      {
+        listName: 'partners',
+        itemKeys: [
+          'name',
+          'image_url',
+          'website',
+          'description',
+          'address',
+          'email',
+          'phone',
+        ],
+        primaryKey: 'name',
+        maxItems: 4,
+      },
+      {
+        listName: 'gallery_images',
+        itemKeys: ['url', 'date', 'caption'],
+        primaryKey: 'url',
+        maxItems: 12,
+      },
+    ]
+  );
 
-    const { success, error } = await updatePageContent({ exhibitions: dataToValidate as ExhibitionsPageContent });
+  const { success, error } = await updatePageContent({
+    exhibitions: dataToValidate as ExhibitionsPageContent,
+  });
 
-    if (!success) {
-        return { message: `Fejl: ${error}` };
-    }
+  if (!success) {
+    return { message: `Fejl: ${error}` };
+  }
 
-    revalidatePath('/udstillinger');
-    revalidatePath('/admin/edit-content/exhibitions');
-    
-    return { message: "Siden 'Udstillinger' er blevet opdateret." };
+  revalidatePath('/udstillinger');
+  revalidatePath('/admin/edit-content/exhibitions');
+
+  return { message: "Siden 'Udstillinger' er blevet opdateret." };
 }
 
-export async function updateSeoPageAction(prevState: any, formData: FormData): Promise<{message: string}> {
-    const rawData = Object.fromEntries(formData.entries());
-    const keywords = (rawData.keywords as string).split(',').map(k => k.trim()).filter(Boolean);
+export async function updateSeoPageAction(
+  prevState: any,
+  formData: FormData
+): Promise<{ message: string }> {
+  const rawData = Object.fromEntries(formData.entries());
+  const keywords = (rawData.keywords as string)
+    .split(',')
+    .map((k) => k.trim())
+    .filter(Boolean);
 
-    const dataToValidate: Partial<SeoPageContent> = {
-        defaultTitle: rawData.defaultTitle as string,
-        titleTemplate: rawData.titleTemplate as string,
-        description: rawData.description as string,
-        keywords: keywords,
-        googleAnalyticsId: rawData.googleAnalyticsId as string,
-        headerScript: rawData.headerScript as string,
-        ogImageUrl: rawData.ogImageUrl as string,
-    }
+  const dataToValidate: Partial<SeoPageContent> = {
+    defaultTitle: rawData.defaultTitle as string,
+    titleTemplate: rawData.titleTemplate as string,
+    description: rawData.description as string,
+    keywords: keywords,
+    googleAnalyticsId: rawData.googleAnalyticsId as string,
+    headerScript: rawData.headerScript as string,
+    ogImageUrl: rawData.ogImageUrl as string,
+  };
 
-    const { content: currentContent, error: readError } = await getPageContent();
-    if(readError || !currentContent) {
-      return { message: `Fejl ved læsning af eksisterende indstillinger: ${readError}` };
-    }
+  const { content: currentContent, error: readError } = await getPageContent();
+  if (readError || !currentContent) {
+    return {
+      message: `Fejl ved læsning af eksisterende indstillinger: ${readError}`,
+    };
+  }
 
-    const updatedSeoContent: SeoPageContent = {
-      ...currentContent.seo,
-      ...dataToValidate
-    }
+  const updatedSeoContent: SeoPageContent = {
+    ...currentContent.seo,
+    ...dataToValidate,
+  };
 
-    const { success, error } = await updatePageContent({ seo: updatedSeoContent });
-    
-    if (!success) {
-        return { message: `Fejl: ${error}` };
-    }
+  const { success, error } = await updatePageContent({
+    seo: updatedSeoContent,
+  });
 
-    revalidatePath('/', 'layout');
-    revalidatePath('/admin/edit-content/seo');
-    
-    return { message: "SEO & Indstillinger er blevet opdateret." };
+  if (!success) {
+    return { message: `Fejl: ${error}` };
+  }
+
+  revalidatePath('/', 'layout');
+  revalidatePath('/admin/edit-content/seo');
+
+  return { message: 'SEO & Indstillinger er blevet opdateret.' };
 }
 
-export async function updateLagersalgPageAction(prevState: any, formData: FormData) {
+export async function updateLagersalgPageAction(
+  prevState: any,
+  formData: FormData
+) {
   const rawData = Object.fromEntries(formData.entries());
 
   const { content: currentContent, error: readError } = await getPageContent();
   if (readError || !currentContent) {
-    return { message: `Fejl ved læsning af eksisterende indstillinger: ${readError}`, errors: true };
+    return {
+      message: `Fejl ved læsning af eksisterende indstillinger: ${readError}`,
+      errors: true,
+    };
   }
 
   const updatedSeoContent: SeoPageContent = {
@@ -384,10 +539,13 @@ export async function updateLagersalgPageAction(prevState: any, formData: FormDa
     secondaryGalleryActive: rawData.secondaryGalleryActive === 'on',
     secondaryGalleryName: rawData.secondaryGalleryName as string,
     secondaryGalleryTitle: rawData.secondaryGalleryTitle as string,
-    secondaryGalleryDescription: rawData.secondaryGalleryDescription as string,
+    secondaryGalleryDescription:
+      rawData.secondaryGalleryDescription as string,
   };
 
-  const { success, error } = await updatePageContent({ seo: updatedSeoContent });
+  const { success, error } = await updatePageContent({
+    seo: updatedSeoContent,
+  });
 
   if (!success) {
     return { message: `Fejl: ${error}`, errors: true };
@@ -396,22 +554,28 @@ export async function updateLagersalgPageAction(prevState: any, formData: FormDa
   revalidatePath('/', 'layout');
   revalidatePath('/lagersalg');
   revalidatePath('/admin/edit-content/lagersalg');
-  
-  return { message: "Lagersalg indstillinger er blevet opdateret." };
+
+  return { message: 'Lagersalg indstillinger er blevet opdateret.' };
 }
 
-
-export async function updateSingleArtPrintAction(id: string, prevState: any, formData: FormData) {
+export async function updateSingleArtPrintAction(
+  id: string,
+  prevState: any,
+  formData: FormData
+) {
   const rawData = Object.fromEntries(formData.entries());
 
   // 1. Get all existing prints
   const allPrints = getAllArtPrintsData();
 
   // 2. Find the index of the print we are updating
-  const printIndex = allPrints.findIndex(p => p.id === id);
+  const printIndex = allPrints.findIndex((p) => p.id === id);
 
   if (printIndex === -1) {
-    return { message: `Fejl: Kunne ikke finde kunsttryk med ID ${id}.`, errors: true };
+    return {
+      message: `Fejl: Kunne ikke finde kunsttryk med ID ${id}.`,
+      errors: true,
+    };
   }
 
   // 3. Create the updated print object from form data
@@ -419,19 +583,19 @@ export async function updateSingleArtPrintAction(id: string, prevState: any, for
     {
       id: 'plain',
       description: 'Uden ramme',
-      url: rawData['frameOptions.plain.url'] as string || '',
+      url: (rawData['frameOptions.plain.url'] as string) || '',
       price: Number(rawData['frameOptions.plain.price'] || 0),
     },
     {
       id: 'black_frame',
       description: 'Sort træramme',
-      url: rawData['frameOptions.black_frame.url'] as string || '',
+      url: (rawData['frameOptions.black_frame.url'] as string) || '',
       price: Number(rawData['frameOptions.black_frame.price'] || 0),
     },
     {
       id: 'oak_frame',
       description: 'Egetræsramme',
-      url: rawData['frameOptions.oak_frame.url'] as string || '',
+      url: (rawData['frameOptions.oak_frame.url'] as string) || '',
       price: Number(rawData['frameOptions.oak_frame.price'] || 0),
     },
   ];
@@ -473,26 +637,33 @@ export async function updateSingleArtPrintAction(id: string, prevState: any, for
   revalidatePath('/kunsttryk');
   revalidatePath('/admin/edit-content/art-prints');
   revalidatePath(`/kunsttryk/${id}`);
-  
+
   return { message: `"${updatedPrintData.name}" er blevet gemt.` };
 }
 
 const galleryPageSchema = z.object({
-    title: z.string(),
-    description: z.string(),
+  title: z.string(),
+  description: z.string(),
 });
 
-export async function updateGalleryPageAction(prevState: any, formData: FormData) {
-  const validatedFields = galleryPageSchema.safeParse(Object.fromEntries(formData.entries()));
+export async function updateGalleryPageAction(
+  prevState: any,
+  formData: FormData
+) {
+  const validatedFields = galleryPageSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Data er ugyldig.",
+      message: 'Data er ugyldig.',
     };
   }
 
-  const { success, error } = await updatePageContent({ gallery: validatedFields.data });
+  const { success, error } = await updatePageContent({
+    gallery: validatedFields.data,
+  });
 
   if (!success) {
     return { message: `Fejl: ${error}` };
@@ -500,6 +671,6 @@ export async function updateGalleryPageAction(prevState: any, formData: FormData
 
   revalidatePath('/galleri');
   revalidatePath('/admin/edit-content/gallery');
-  
-  return { message: "Gallerisiden er blevet opdateret." };
+
+  return { message: 'Gallerisiden er blevet opdateret.' };
 }
