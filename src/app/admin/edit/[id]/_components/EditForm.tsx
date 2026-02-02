@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { Artwork } from "@/lib/artwork-service";
-import { updateArtworkAction } from "@/app/lib/actions";
+import { updateArtworkAction } from "@/lib/actions";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

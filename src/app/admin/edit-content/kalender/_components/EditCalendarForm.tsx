@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import type { CalendarEvent } from "@/lib/artwork-service";
-import { updateCalendarPageAction } from "@/app/lib/actions";
+import { updateCalendarPageAction } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";

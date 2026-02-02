@@ -4,7 +4,7 @@ import { getIronSession } from 'iron-session';
 import { sessionOptions } from '@/lib/session';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { logout } from '@/app/lib/actions';
+import { logout } from '@/lib/actions';
 
 export default async function AdminLayout({
   children,
