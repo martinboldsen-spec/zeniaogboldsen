@@ -1,4 +1,5 @@
 
+
 'use server';
 
 import { google, type sheets_v4 } from 'googleapis';
@@ -364,6 +365,34 @@ export async function updateCalendarEvents(events: CalendarEvent[]): Promise<{ s
   try {
     const sheets = await getSheets();
 
+    // Check if the sheet exists.
+    const spreadsheetInfo = await sheets.spreadsheets.get({
+        spreadsheetId: BOLDSEN_SHEET_ID,
+        ranges: [], // We don't need values, just sheet properties
+    });
+
+    const sheetExists = spreadsheetInfo.data.sheets?.some(
+      (sheet) => sheet.properties?.title === CALENDAR_EVENTS_SHEET_NAME
+    );
+    
+    // If it doesn't exist, create it.
+    if (!sheetExists) {
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: BOLDSEN_SHEET_ID,
+        requestBody: {
+          requests: [
+            {
+              addSheet: {
+                properties: {
+                  title: CALENDAR_EVENTS_SHEET_NAME,
+                },
+              },
+            },
+          ],
+        },
+      });
+    }
+
     // First, clear the existing sheet to remove old entries
     await sheets.spreadsheets.values.clear({
         spreadsheetId: BOLDSEN_SHEET_ID,
@@ -380,23 +409,7 @@ export async function updateCalendarEvents(events: CalendarEvent[]): Promise<{ s
 
     return { success: true };
   } catch (error: any) {
-    const sheets = await getSheets();
-    // If clearing fails because sheet doesn't exist, we try to just write.
-    if (error.message && (error.message.includes('Unable to parse range') || error.message.includes('clear is not a function'))) {
-         try {
-             await sheets.spreadsheets.values.update({
-                spreadsheetId: BOLDSEN_SHEET_ID,
-                range: `${CALENDAR_EVENTS_SHEET_NAME}!A1`,
-                valueInputOption: 'USER_ENTERED',
-                requestBody: { values },
-                });
-             return { success: true };
-         } catch (writeError: any) {
-             console.error('Error writing to new calendar sheet:', writeError);
-             return { success: false, error: `Could not create or write to calendar sheet: ${writeError.message}` };
-         }
-    }
     console.error('Error updating calendar sheet:', error);
-    return { success: false, error: `Could not update calendar sheet: ${error.message}` };
+    return { success: false, error: `Could not create or write to calendar sheet: ${error.message}` };
   }
 }
