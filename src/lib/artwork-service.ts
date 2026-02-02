@@ -239,7 +239,8 @@ export async function getAllCalendarEvents(): Promise<{ events: CalendarEvent[];
     if (!credentials) {
         // In this case, we just return an empty array instead of mock data, 
         // as the calendar is a non-essential, additive feature.
-        return { events: [], error: 'Google credentials not configured. Calendar feature is disabled.' };
+        console.warn('Google credentials not configured. Calendar feature is disabled, returning empty list.');
+        return { events: [] };
     }
 
     try {
