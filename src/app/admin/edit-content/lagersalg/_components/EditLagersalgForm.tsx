@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import type { SeoPageContent } from "@/lib/page-content-service";
-import { updateLagersalgPageAction } from "@/app/lib/actions";
+import { updateLagersalgPageAction } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
