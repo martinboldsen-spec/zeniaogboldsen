@@ -33,14 +33,33 @@ function SubmitButton() {
 
 // A custom date picker component for the form
 function DatePicker({ name, defaultValue }: { name: string, defaultValue?: string }) {
-    const [date, setDate] = useState<Date | undefined>(defaultValue ? new Date(defaultValue) : undefined);
-    const [hiddenValue, setHiddenValue] = useState<string>(defaultValue ? new Date(defaultValue).toISOString().split('T')[0] : "");
+    const parseAsLocalDate = (dateString?: string) => {
+        if (!dateString) return undefined;
+        // Split to avoid timezone issues where 'YYYY-MM-DD' is parsed as UTC.
+        // This ensures the date is treated as local.
+        const parts = dateString.split('-').map(s => parseInt(s, 10));
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+    };
+
+    const [date, setDate] = useState<Date | undefined>(parseAsLocalDate(defaultValue));
+    const [hiddenValue, setHiddenValue] = useState<string>(defaultValue || "");
 
     useEffect(() => {
-        if(date) {
-            setHiddenValue(date.toISOString().split('T')[0]);
+        if (date) {
+            // Timezone-safe formatting to YYYY-MM-DD string
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            setHiddenValue(`${year}-${month}-${day}`);
+        } else {
+            setHiddenValue('');
         }
-    }, [date])
+    }, [date]);
+
+    // Handles updates if the parent component re-renders with a new defaultValue
+    useEffect(() => {
+        setDate(parseAsLocalDate(defaultValue));
+    }, [defaultValue]);
 
     return (
         <>
