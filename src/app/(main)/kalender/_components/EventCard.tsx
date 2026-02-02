@@ -10,8 +10,15 @@ type EventCardProps = {
 };
 
 function formatDateRange(startDate: string, endDate: string): string {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    const parseAsLocalDate = (dateString: string) => {
+        if (!dateString || !dateString.includes('-')) return new Date(); // Fallback for safety
+        const parts = dateString.split('-').map(s => parseInt(s, 10));
+        // new Date(year, monthIndex, day)
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+    };
+
+    const start = parseAsLocalDate(startDate);
+    const end = parseAsLocalDate(endDate);
 
     const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     const startStr = start.toLocaleDateString('da-DK', options);
