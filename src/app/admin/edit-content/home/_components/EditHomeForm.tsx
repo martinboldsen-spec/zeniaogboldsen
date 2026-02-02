@@ -3,7 +3,7 @@
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import type { HomePageContent } from "@/lib/page-content-service";
-import { updateHomePageAction } from "@/app/lib/actions";
+import { updateHomePageAction } from "@/lib/actions";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

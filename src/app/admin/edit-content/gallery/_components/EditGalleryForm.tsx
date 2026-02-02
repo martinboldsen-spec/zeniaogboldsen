@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import type { GalleryPageContent } from "@/lib/page-content-service";
-import { updateGalleryPageAction } from "@/app/lib/actions";
+import { updateGalleryPageAction } from "@/lib/actions";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

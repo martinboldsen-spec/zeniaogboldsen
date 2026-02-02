@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { ArtPrint } from "@/lib/art-print-service";
-import { updateSingleArtPrintAction } from "@/app/lib/actions";
+import { updateSingleArtPrintAction } from "@/lib/actions";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

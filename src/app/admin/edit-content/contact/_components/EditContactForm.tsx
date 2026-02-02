@@ -5,7 +5,7 @@ import type {
   ContactPageContent,
   FooterSocialLink,
 } from "@/lib/page-content-service";
-import { updateContactPageAction } from "@/app/lib/actions";
+import { updateContactPageAction } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";

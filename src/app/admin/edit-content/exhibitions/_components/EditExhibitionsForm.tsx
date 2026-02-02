@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import type { ExhibitionsPageContent } from "@/lib/page-content-service";
-import { updateExhibitionsPageAction } from "@/app/lib/actions";
+import { updateExhibitionsPageAction } from "@/lib/actions";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

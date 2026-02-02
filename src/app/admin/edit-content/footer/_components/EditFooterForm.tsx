@@ -6,7 +6,7 @@ import type {
   FooterPageContent,
   FooterSocialLink,
 } from "@/lib/page-content-service";
-import { updateFooterPageAction } from "@/app/lib/actions";
+import { updateFooterPageAction } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
