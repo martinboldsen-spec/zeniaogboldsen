@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowRight, Edit, Home, Mail, Settings, Image as ImageIcon, BarChart, LogOut, Printer, GalleryHorizontal, Component, Users } from "lucide-react";
+import { ArrowRight, Edit, Home, Mail, Settings, Image as ImageIcon, BarChart, LogOut, Printer, GalleryHorizontal, Component, Users, Calendar } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -45,6 +45,12 @@ const adminLinks = [
     title: "Udstillinger-side",
     description: "Rediger galleri-samarbejder og billeder fra udstillinger.",
     icon: <ImageIcon className="h-5 w-5 text-muted-foreground" />
+  },
+  {
+    href: "/admin/edit-content/kalender",
+    title: "Kalender",
+    description: "Administrer kommende begivenheder og udstillinger i kalenderen.",
+    icon: <Calendar className="h-5 w-5 text-muted-foreground" />
   },
   {
     href: "/admin/edit-content/contact",

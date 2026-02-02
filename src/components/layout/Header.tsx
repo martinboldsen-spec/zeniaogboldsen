@@ -19,6 +19,7 @@ const baseNavLinks = [
   { href: '/', label: 'Forside' },
   { href: '/galleri', label: 'Galleri' },
   { href: '/udstillinger', label: 'Udstillinger' },
+  { href: '/kalender', label: 'Kalender' },
   { href: '/about', label: 'Om Os' },
   { href: '/contact', label: 'Kontakt' },
 ];

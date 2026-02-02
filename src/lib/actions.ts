@@ -1,8 +1,9 @@
 
+
 "use server";
 
 import { z } from "zod";
-import { updateArtwork, type Artwork } from "@/lib/artwork-service";
+import { updateArtwork, type Artwork, updateCalendarEvents, type CalendarEvent } from "@/lib/artwork-service";
 import {
   updatePageContent,
   type GalleryPageContent,
@@ -674,3 +675,42 @@ export async function updateGalleryPageAction(
 
   return { message: 'Gallerisiden er blevet opdateret.' };
 }
+
+export async function updateCalendarPageAction(prevState: any, formData: FormData): Promise<{message: string; errors?: any}> {
+    const rawData = Object.fromEntries(formData.entries());
+    
+    const events: CalendarEvent[] = [];
+    for (let i = 0; i < 10; i++) {
+        const title = rawData[`events.${i}.title`] as string;
+        if (title) { // Only process if title exists
+            events.push({
+                id: rawData[`events.${i}.id`] as string,
+                title: title,
+                description: rawData[`events.${i}.description`] as string,
+                imageUrl: rawData[`events.${i}.imageUrl`] as string,
+                link: rawData[`events.${i}.link`] as string,
+                startDate: rawData[`events.${i}.startDate`] as string,
+                endDate: rawData[`events.${i}.endDate`] as string,
+            });
+        }
+    }
+
+    // Basic validation
+    for (const event of events) {
+        if (!event.startDate || !event.endDate) {
+            return { message: `Manglende start- eller slutdato for "${event.title}".`, errors: true };
+        }
+    }
+
+    const { success, error } = await updateCalendarEvents(events);
+
+    if (!success) {
+        return { message: `Fejl: ${error}`, errors: true };
+    }
+
+    revalidatePath('/kalender');
+    revalidatePath('/admin/edit-content/kalender');
+    
+    return { message: "Kalenderen er blevet opdateret." };
+}
+

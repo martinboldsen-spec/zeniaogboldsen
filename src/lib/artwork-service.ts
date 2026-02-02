@@ -1,3 +1,4 @@
+
 'use server';
 
 import { google, type sheets_v4 } from 'googleapis';
@@ -42,10 +43,23 @@ export interface Artwork {
   dominantColor?: string;
 }
 
+// ----- NEW CALENDAR EVENT MODELS -----
+export interface CalendarEvent {
+    id: string;
+    title: string;
+    description: string;
+    imageUrl: string;
+    link: string;
+    startDate: string;
+    endDate: string;
+}
+
+
 // ----- CONFIGURATION -----
 const BOLDSEN_SHEET_ID = '13A02EeZQ40iGU36wD0zGBd90MBQTqplKvhh6To29U1Y';
 const ZENIA_SHEET_ID = '13eBPgqjhlQO84Ob-kzvbmJ9ZxP7XS0avszsVSlhfM8Y';
 const ARTWORKS_SHEET_NAME = 'Artworks';
+const CALENDAR_EVENTS_SHEET_NAME = 'CalendarEvents';
 
 
 // ----- HELPER FUNCTIONS -----
@@ -131,6 +145,15 @@ function mapRowToArtwork(row: any[], header: string[], artist: 'boldsen' | 'zeni
   return artwork as Artwork;
 }
 
+function mapRowToCalendarEvent(row: any[], header: string[]): CalendarEvent {
+  const event: any = {};
+  header.forEach((key, index) => {
+    const rawValue = row[index];
+    event[key] = rawValue !== undefined && rawValue !== null ? String(rawValue) : '';
+  });
+  return event as CalendarEvent;
+}
+
 // ----- DATA FETCHING -----
 
 async function fetchArtworksFromSheet(sheetId: string, artist: 'boldsen' | 'zenia'): Promise<{ artworks?: Artwork[]; error?: string; }> {
@@ -211,6 +234,43 @@ export async function getArtworkById(id: string): Promise<{ artwork?: Artwork; e
     return { artwork };
 }
 
+export async function getAllCalendarEvents(): Promise<{ events: CalendarEvent[]; error?: string; }> {
+    const credentials = await getCredentials();
+    if (!credentials) {
+        // In this case, we just return an empty array instead of mock data, 
+        // as the calendar is a non-essential, additive feature.
+        return { events: [], error: 'Google credentials not configured. Calendar feature is disabled.' };
+    }
+
+    try {
+        const sheets = await getSheets();
+        const res = await sheets.spreadsheets.values.get({
+            spreadsheetId: BOLDSEN_SHEET_ID, // Storing in the main sheet for simplicity
+            range: CALENDAR_EVENTS_SHEET_NAME,
+        });
+
+        const rows = res.data.values;
+        if (!rows || rows.length <= 1) {
+            return { events: [] };
+        }
+
+        const header = rows[0];
+        const events = rows.slice(1).map(row => mapRowToCalendarEvent(row, header)).filter(event => event.id && event.title);
+        
+        return { events };
+    } catch (error: any) {
+         if (error.message && error.message.includes('Unable to parse range')) {
+            // This error means the sheet doesn't exist yet. It's not a critical failure.
+            console.log(`'${CALENDAR_EVENTS_SHEET_NAME}' sheet not found. Returning empty array. It will be created on the first save.`);
+            return { events: [] };
+        }
+        const creds = await getCredentials().catch(() => null);
+        const serviceAccountEmail = (creds as any)?.client_email || 'unknown';
+        console.error(`Error reading calendar events from Google Sheet (ID: ${BOLDSEN_SHEET_ID}):`, error);
+        return { error: `Kunne ikke indlæse kalender. Tjek at et faneblad med navnet '${CALENDAR_EVENTS_SHEET_NAME}' eksisterer, og at det er delt med service-kontoen. Service-konto email: ${serviceAccountEmail}` };
+    }
+}
+
 
 // ----- UPDATE/WRITE FUNCTIONS (kun til Boldsens sheet indtil videre) -----
 
@@ -287,5 +347,55 @@ export async function updateArtwork(id: string, data: Partial<Artwork>): Promise
         return { success: true };
   } catch (error: any) {
     return { success: false, error: `Kunne ikke opdatere værket: ${error.message}` };
+  }
+}
+
+// ----- NEW CALENDAR UPDATE FUNCTION -----
+export async function updateCalendarEvents(events: CalendarEvent[]): Promise<{ success: boolean; error?: string }> {
+  const credentials = await getCredentials();
+  if (!credentials) {
+    return { success: false, error: "Google credentials not configured. Cannot save events." };
+  }
+
+  const header = ["id", "title", "description", "imageUrl", "link", "startDate", "endDate"];
+  const values = [header, ...events.map(event => header.map(key => event[key as keyof CalendarEvent]))];
+
+  try {
+    const sheets = await getSheets();
+
+    // First, clear the existing sheet to remove old entries
+    await sheets.spreadsheets.values.clear({
+        spreadsheetId: BOLDSEN_SHEET_ID,
+        range: CALENDAR_EVENTS_SHEET_NAME,
+    });
+    
+    // Then, write the new data
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: BOLDSEN_SHEET_ID,
+      range: `${CALENDAR_EVENTS_SHEET_NAME}!A1`,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values },
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    const sheets = await getSheets();
+    // If clearing fails because sheet doesn't exist, we try to just write.
+    if (error.message && (error.message.includes('Unable to parse range') || error.message.includes('clear is not a function'))) {
+         try {
+             await sheets.spreadsheets.values.update({
+                spreadsheetId: BOLDSEN_SHEET_ID,
+                range: `${CALENDAR_EVENTS_SHEET_NAME}!A1`,
+                valueInputOption: 'USER_ENTERED',
+                requestBody: { values },
+                });
+             return { success: true };
+         } catch (writeError: any) {
+             console.error('Error writing to new calendar sheet:', writeError);
+             return { success: false, error: `Could not create or write to calendar sheet: ${writeError.message}` };
+         }
+    }
+    console.error('Error updating calendar sheet:', error);
+    return { success: false, error: `Could not update calendar sheet: ${error.message}` };
   }
 }
