@@ -72,8 +72,12 @@ export function ArtworkFilterGridClient({ artworks }: { artworks: Artwork[] }) {
     return artworks
     .filter(artwork => {
         if (category === 'all') return true;
-        // The type 'vægkunst' can be considered a painting for filtering purposes
-        if (category === 'painting') return artwork.type === 'painting' || artwork.type === 'vægkunst';
+        if (category === 'painting') {
+            return artwork.type === 'painting';
+        }
+        if (category === 'keramik') {
+            return artwork.type === 'keramik' || artwork.type === 'vægkunst';
+        }
         return artwork.type === category;
     })
     .sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
